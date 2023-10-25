@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "430675642577",
+    "project_id": "scrollbar-05",
+    "storage_bucket": "scrollbar-05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430675642577:android:f5b6302811e2505b00ddf0",
+        "android_client_info": {
+          "package_name": "com.camm.proyecto3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo4f5h8FH1B2Z4Pog5hr90oQEO_nGCsIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
