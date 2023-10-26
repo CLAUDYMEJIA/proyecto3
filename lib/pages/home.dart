@@ -50,3 +50,68 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class _MyHomePageState extends State<MyHomePage> {
+  final CollectionReference testCollection =
+      FirebaseFirestore.instance.collection("tbtest");
+
+  final TextEditingController idController = TextEditingController();
+  final TextEditingController nombreController = TextEditingController();
+  final TextEditingController edadController = TextEditingController();
+  final TextEditingController telefonoController = TextEditingController();
+
+  Future<void> addTest() async {
+    String id = idController.text.trim();
+    String nombre = nombreController.text.trim();
+    String edad = edadController.text.trim();
+    String telefono = telefonoController.text.trim();
+
+    if (id.isNotEmpty &&
+        nombre.isNotEmpty &&
+        edad.isNotEmpty &&
+        telefono.isNotEmpty) {
+      await testCollection.doc(id).set({
+        'nombre': nombre,
+        'edad': edad,
+        'telefono': telefono,
+      });
+
+      idController.clear();
+      nombreController.clear();
+      edadController.clear();
+      telefonoController.clear();
+
+      _showSnackbar('Datos Agregados Correctamente del Cliente');
+    } else {
+      _showSnackbar('Por favor, completa todos los campos');
+    }
+  }
+
+  Future<List<Test>> getTests() async {
+    QuerySnapshot tests = await testCollection.get();
+    List<Test> listaTests = [];
+    if (tests.docs.length != 0) {
+      for (var doc in tests.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        listaTests.add(Test(
+          id: doc.id,
+          nombre: data['nombre'] ?? '',
+          edad: data['edad'] ?? '',
+          telefono: data['telefono'] ?? '',
+        ));
+      }
+    }
+    return listaTests;
+  }
+
+  Future<void> reloadTests() async {
+    setState(() {});
+  }
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
