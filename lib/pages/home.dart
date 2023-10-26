@@ -115,3 +115,122 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+    @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(widget.title),
+      ),
+      body: ScrollbarTheme(
+        data: ScrollbarThemeData(
+          thumbColor: MaterialStateProperty.all(Colors.red),
+        ),
+        child: Scrollbar(
+          thumbVisibility: false,
+          thickness: 8.0,
+          radius: Radius.circular(8.0),
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _buildRoundedTextField(
+                        controller: idController,
+                        labelText: 'ID',
+                        icon: Icons.numbers,
+                      ),
+                      SizedBox(height: 8.0),
+                      _buildRoundedTextField(
+                        controller: nombreController,
+                        labelText: 'Nombre',
+                        icon: Icons.person_2,
+                      ),
+                      SizedBox(height: 8.0),
+                      _buildRoundedTextField(
+                        controller: edadController,
+                        labelText: 'Edad',
+                        icon: Icons.date_range_sharp,
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(height: 8.0),
+                      _buildRoundedTextField(
+                        controller: telefonoController,
+                        labelText: 'Teléfono',
+                        icon: Icons.phone_locked,
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(height: 8.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              addTest();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                            ),
+                            child: Text('Agregar'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              reloadTests();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.green,
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                            ),
+                            child: Text('Actualizar'),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 6.0),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: FutureBuilder<List<Test>>(
+                  future: getTests(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error al cargar los datos'),
+                      );
+                    } else {
+                      List<Test>? tests = snapshot.data;
+                      return DataTable(
+                        columns: [
+                          DataColumn(label: Text('ID')),
+                          DataColumn(label: Text('Nombre')),
+                          DataColumn(label: Text('Edad')),
+                          DataColumn(label: Text('Teléfono')),
+                        ],
+                        rows: tests!.map((test) {
+                          return DataRow(cells: [
+                            DataCell(Text(test.id)),
+                            DataCell(Text(test.nombre)),
+                            DataCell(Text(test.edad)),
+                            DataCell(Text(test.telefono)),
+                          ]);
+                        }).toList(),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
