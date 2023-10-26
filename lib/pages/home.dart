@@ -115,7 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-    @override
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -195,37 +196,40 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SliverToBoxAdapter(
-                child: FutureBuilder<List<Test>>(
-                  future: getTests(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Error al cargar los datos'),
-                      );
-                    } else {
-                      List<Test>? tests = snapshot.data;
-                      return DataTable(
-                        columns: [
-                          DataColumn(label: Text('ID')),
-                          DataColumn(label: Text('Nombre')),
-                          DataColumn(label: Text('Edad')),
-                          DataColumn(label: Text('Teléfono')),
-                        ],
-                        rows: tests!.map((test) {
-                          return DataRow(cells: [
-                            DataCell(Text(test.id)),
-                            DataCell(Text(test.nombre)),
-                            DataCell(Text(test.edad)),
-                            DataCell(Text(test.telefono)),
-                          ]);
-                        }).toList(),
-                      );
-                    }
-                  },
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal, // Habilita el scroll horizontal
+                  child: FutureBuilder<List<Test>>(
+                    future: getTests(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text('Error al cargar los datos'),
+                        );
+                      } else {
+                        List<Test>? tests = snapshot.data;
+                        return DataTable(
+                          columns: [
+                            DataColumn(label: Text('ID')),
+                            DataColumn(label: Text('Nombre')),
+                            DataColumn(label: Text('Edad')),
+                            DataColumn(label: Text('Teléfono')),
+                          ],
+                          rows: tests!.map((test) {
+                            return DataRow(cells: [
+                              DataCell(Text(test.id)),
+                              DataCell(Text(test.nombre)),
+                              DataCell(Text(test.edad)),
+                              DataCell(Text(test.telefono)),
+                            ]);
+                          }).toList(),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
             ],
@@ -234,7 +238,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-    Widget _buildRoundedTextField({
+
+  Widget _buildRoundedTextField({
     required TextEditingController controller,
     required String labelText,
     required IconData icon,
@@ -260,4 +265,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
 
