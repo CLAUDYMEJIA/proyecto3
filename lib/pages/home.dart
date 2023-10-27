@@ -128,9 +128,10 @@ class _MyHomePageState extends State<MyHomePage> {
           thumbColor: MaterialStateProperty.all(Colors.red),
         ),
         child: Scrollbar(
-          thumbVisibility: false,
+          thumbVisibility: true,
           thickness: 8.0,
           radius: Radius.circular(8.0),
+          interactive: true,
           child: CustomScrollView(
             slivers: <Widget>[
               SliverToBoxAdapter(
@@ -144,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         labelText: 'ID',
                         icon: Icons.numbers,
                       ),
-                      SizedBox(height: 8.0),
+                     SizedBox(height: 8.0),
                       _buildRoundedTextField(
                         controller: nombreController,
                         labelText: 'Nombre',
@@ -195,6 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
+              
               SliverToBoxAdapter(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal, // Habilita el scroll horizontal
